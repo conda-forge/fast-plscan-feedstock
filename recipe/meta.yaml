@@ -10,7 +10,7 @@ source:
   sha256: 0d4cd1d58db4e4f46d22cab2abcb283dda1a52fe96dfe52c4af1e849d367370f
 
 build:
-  number: 0
+  number: 1
   skip: true                                # [py < 310 or py > 312]
   python_version_independent: true          # [py >= 312]
   script: 
