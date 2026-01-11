@@ -1,5 +1,5 @@
 {% set name = "fast-plscan" %}
-{% set version = "0.1.0.post1" %}
+{% set version = "0.1.0.post2" %}
 
 package:
   name: {{ name|lower }}
@@ -7,18 +7,18 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/fast_plscan-{{ version }}.tar.gz
-  sha256: 0d4cd1d58db4e4f46d22cab2abcb283dda1a52fe96dfe52c4af1e849d367370f
+  sha256: 8017fb8a02982bf9b18bf214f319ea63d16e9e4b31a92bc6b02e490b81e5adf1
 
 build:
-  number: 1
+  number: 0
   skip: true                                # [py < 310 or py > 312]
   python_version_independent: true          # [py >= 312]
   script: 
     # Workaround for llvm linker crashing with /link flag on windows
     - set "LDFLAGS=%LDFLAGS:/link =%"  # [win]
-    - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation -C cmake.args="-DPython_EXECUTABLE=%PYTHON%" -C cmake.args="-T ClangCL"  # [win]
-    - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation -C cmake.args="-G=Ninja" -C cmake.args="-DPython_EXECUTABLE=$PYTHON"     # [not win]
-
+    # Cross-compile builds don't support stub generation, disabled it for all builds for consistency
+    - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation -C cmake.args="-DPython_EXECUTABLE=%PYTHON%" -C cmake.args='-DPLSCAN_CREATE_STUBS=OFF' -C cmake.args="-T ClangCL" # [win]
+    - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation -C cmake.args="-DPython_EXECUTABLE=$PYTHON" -C cmake.args='-DPLSCAN_CREATE_STUBS=OFF' -C cmake.args="-G=Ninja"    # [not win]
 requirements:
   build:
     - cmake
