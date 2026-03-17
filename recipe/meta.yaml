@@ -14,35 +14,32 @@ build:
   skip: true                                # [py < 310 or py > 312]
   python_version_independent: true          # [py >= 312]
   script: 
-    # Workaround for llvm linker crashing with /link flag on windows
-    - set "LDFLAGS=%LDFLAGS:/link =%"  # [win]
     # Cross-compile builds don't support stub generation, disabled it for all builds for consistency
-    - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation -C cmake.args="-DPython_EXECUTABLE=%PYTHON%" -C cmake.args='-DPLSCAN_CREATE_STUBS=OFF' -C cmake.args="-T ClangCL"  # [win]
+    - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation -C cmake.args="-DPython_EXECUTABLE=%PYTHON%" -C cmake.args='-DPLSCAN_CREATE_STUBS=OFF' # [win]
     - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation -C cmake.args="-DPython_EXECUTABLE=$PYTHON"  -C cmake.args='-DPLSCAN_CREATE_STUBS=OFF' -C cmake.args="-G=Ninja"    # [not win]
 requirements:
   build:
     - cmake
     - ninja                                 # [not win]
     - {{ stdlib('c') }}
-    - {{ compiler('cxx') }}                 # [linux]
-    - {{ compiler('clangxx') }}             # [not linux]
+    - {{ compiler('cxx') }}
     - scikit-build-core                     # [build_platform != target_platform]
     - setuptools-scm                        # [build_platform != target_platform]
     - nanobind                              # [build_platform != target_platform]
     - python                                # [build_platform != target_platform]
     - cross-python_{{ target_platform }}    # [build_platform != target_platform]
     - libgomp                               # [build_platform != target_platform and linux]
-    - llvm-openmp                           # [build_platform != target_platform and not linux]
+    - llvm-openmp                           # [build_platform != target_platform and osx]
   host:
     - pip
     - python
     - python-abi3                           # [py >= 312] 
-    - python-gil                          
+    - python-gil
     - scikit-build-core
     - setuptools-scm
     - nanobind
     - libgomp                               # [linux]
-    - llvm-openmp                           # [not linux]
+    - llvm-openmp                           # [osx]
   run:
     - python
     - numpy >=2,<3
