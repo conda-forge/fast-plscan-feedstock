@@ -15,8 +15,8 @@ build:
   python_version_independent: true          # [py >= 312]
   script: 
     # Cross-compile builds don't support stub generation, disabled it for all builds for consistency
-    - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation -C cmake.args="-DPython_EXECUTABLE=%PYTHON%" -C cmake.args='-DPLSCAN_CREATE_STUBS=OFF' # [win]
-    - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation -C cmake.args="-DPython_EXECUTABLE=$PYTHON"  -C cmake.args='-DPLSCAN_CREATE_STUBS=OFF' -C cmake.args="-G=Ninja"    # [not win]
+    - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation -C cmake.args="-DPython_EXECUTABLE=%PYTHON%" -C cmake.args='-DPLSCAN_CREATE_STUBS=OFF'  # [win]
+    - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation -C cmake.args="-DPython_EXECUTABLE=$PYTHON"  -C cmake.args='-DPLSCAN_CREATE_STUBS=OFF' -C cmake.args="-G=Ninja"  # [not win]
 requirements:
   build:
     - cmake
@@ -30,6 +30,7 @@ requirements:
     - cross-python_{{ target_platform }}    # [build_platform != target_platform]
     - libgomp                               # [build_platform != target_platform and linux]
     - llvm-openmp                           # [build_platform != target_platform and osx]
+    - vcomp14                               # [build_platform != target_platform and win]
   host:
     - pip
     - python
@@ -40,6 +41,7 @@ requirements:
     - nanobind
     - libgomp                               # [linux]
     - llvm-openmp                           # [osx]
+    - vcomp14                               # [win]
   run:
     - python
     - numpy >=2,<3
