@@ -1,5 +1,5 @@
 {% set name = "fast-plscan" %}
-{% set version = "0.1.0.post2" %}
+{% set version = "0.2.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/fast_plscan-{{ version }}.tar.gz
-  sha256: 8017fb8a02982bf9b18bf214f319ea63d16e9e4b31a92bc6b02e490b81e5adf1
+  sha256: 034fbf0b79fe64703dd9e5a0812aecf374172fceb1c85c5df390a2923fbe44e8
 
 build:
   number: 0
