@@ -10,9 +10,9 @@ channel_sources:
 - conda-forge
 channel_targets:
 - conda-forge main
-clangxx_compiler:
+cxx_compiler:
 - clangxx
-clangxx_compiler_version:
+cxx_compiler_version:
 - '19'
 llvm_openmp:
 - '19'
